@@ -1,0 +1,28 @@
+q = 0.02   
+gen = int(input("Enter the amount of generations you want to simulate"))
+
+f_allele = open("results/Allele_freq.txt", "w")
+f_genotype = open("results/Genotype_freq.txt", "w")
+
+f_allele.write("Generation\tFreq_c\n")
+f_genotype.write("Generation\tFreq_CC\tFreq_Cc\tFreq_cc\n")
+
+for generation in range(gen + 1):
+
+    p = 1 - q
+
+    freq_CC = p ** 2
+    freq_Cc = 2 * p * q
+    freq_cc = q ** 2
+
+    f_allele.write(f"{generation}\t{q:.6f}\n")
+    f_genotype.write(f"{generation}\t{freq_CC:.6f}\t{freq_Cc:.6f}\t{freq_cc:.6f}\n")
+
+    total_survivors = freq_CC + freq_Cc
+    if total_survivors > 0:
+        q = (0.5 * freq_Cc) / total_survivors
+
+f_allele.close()
+f_genotype.close()
+
+print("Calculation complete. Results saved to two files.")
